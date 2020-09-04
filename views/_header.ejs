@@ -1,24 +1,10 @@
 <header>
-  Page Header
-
+  ProtectPay
   <ul>
     <% if (locals.user){ %>
     <li>
-      <a href="/users/dashboard"> <%= user.name %> </a>
+      <a href="/users/logout">Log Out</a>
     </li>
-    <li>
-      <a href="/users/logout">Sign Out</a>
-    </li>
-    <% }else{ %>
-
-    <li>
-      <a href="/users/login">Sign In</a>
-    </li>
-
-    <li>
-      <a href="/users/register">Sign Up</a>
-    </li>
-
-    <% } %>
+    <% }else{ %> <% } %>
   </ul>
 </header>
