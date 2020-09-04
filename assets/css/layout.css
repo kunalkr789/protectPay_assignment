@@ -12,6 +12,7 @@
 
 .main {
   padding: 0px 10px;
+  margin-top: 10%;
 }
 
 @media screen and (max-height: 450px) {
@@ -22,11 +23,11 @@
 
 @media screen and (max-width: 450px) {
   .login-form {
-    margin-top: 1%;
+    margin-top: 10%;
   }
 
   .register-form {
-    margin-top: 1%;
+    margin-top: 10%;
   }
 }
 
