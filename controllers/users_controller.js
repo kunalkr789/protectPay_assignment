@@ -6,12 +6,18 @@ module.exports.dashboard = function (req, res) {
   });
 };
 module.exports.register = function (req, res) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/dashboard");
+  }
   return res.render("sign_up", {
     title: "protectpay | register",
   });
 };
 
 module.exports.logIn = function (req, res) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/dashboard");
+  }
   return res.render("sign_in", {
     title: "protectpay | login",
   });
@@ -46,5 +52,10 @@ module.exports.create = function (req, res) {
 
 // sign in and create a session for the user
 module.exports.createSession = function (req, res) {
-  // TODO later
+  return res.redirect("/users/dashboard");
+};
+
+module.exports.destroySession = function (req, res) {
+  req.logout();
+  return res.redirect("/");
 };
