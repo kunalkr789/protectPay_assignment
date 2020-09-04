@@ -36,8 +36,12 @@ module.exports.create = function (req, res) {
       console.log("error in finding user in signing up");
       return;
     }
+    if (req.body.balance < 1000) {
+      req.flash("error", "Amount cannot be less than 1000.");
+      return res.redirect("back");
+    }
 
-    if (!user) {
+    if (!user && req.body.balance >= 1000) {
       User.create(
         {
           name: req.body.name,
@@ -61,12 +65,13 @@ module.exports.create = function (req, res) {
   });
 };
 
-// sign in and create a session for the user
+// login and create a session for the user
 module.exports.createSession = function (req, res) {
   req.flash("success", "Logged in Successfully");
   return res.redirect("/users/dashboard");
 };
 
+//logout and destroy the session
 module.exports.destroySession = function (req, res) {
   req.logout();
   req.flash("success", "Logged out Successfully");
