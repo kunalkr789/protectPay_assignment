@@ -1,4 +1,19 @@
-<link rel="stylesheet" href="/css/dashboard.css" />
+<!-- <link rel="stylesheet" href="/css/dashboard.css" />
+<h1>Welcome!Here's your multitasker dashboard</h1>
+<a href="/users/logout">Log Out</a>
+<p><%= user.name %></p>
+<p><%= user.email %></p>
+<p><%= user.account_number %></p>
+<p><%= user.balance %></p>
+
+<a href="/users/moneyTransfer">
+  <button type="submit" class="btn btn-secondary">Fund Transfer</button>
+</a>
+
+<a href="/users/addPayee">
+  <button type="submit" class="btn btn-secondary">Add Payee</button>
+</a> -->
+<!-- <link rel="stylesheet" href="/css/dashboard.css" />
 <h1>Welcome!Here's your multitasker dashboard</h1>
 <a href="/users/logout">Log Out</a>
 <p><%= user.name %></p>
@@ -8,4 +23,89 @@
 
 <a href="/users/moneyTransfer">
     <button type="submit" class="btn btn-secondary">Fund Transfer</button>
-</a>
+</a> -->
+
+<link rel="stylesheet" href="/css/dashboard.css" />
+
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="sidenav">
+  <div class="login-main-text">
+    <a href="/">
+      <h2>ProtectPay</h2>
+    </a>
+    <p>Welcome ! happy to see you.</p>
+  </div>
+</div>
+<div class="main">
+  <div>
+    <div class="box">
+      <div class="personal-info">
+        <h2>Account Details</h2>
+        <ul>
+          <li>
+            <div class="title">Account Holder Name :</div>
+            <div class="text"><%= user.name %></div>
+          </li>
+
+          <li>
+            <div class="title">Account Number :</div>
+            <div class="text">
+              <a href><%= user.account_number %></a>
+            </div>
+          </li>
+
+          <li>
+            <div class="title">Account Balance :</div>
+            <div class="text">
+              <a href><%= user.balance %></a>
+            </div>
+          </li>
+        </ul>
+        <a href="/users/logout"
+          ><button type="submit" class="btn btn-secondary">Log Out</button></a
+        >
+
+        <a href="/users/moneyTransfer">
+          <button type="submit" class="btn btn-secondary">Fund Transfer</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div class="col-md-6 col-sm-12">
+    <div class="login-form">
+      <form action="/users/addPayee" method="POST">
+        <div class="form-group">
+          <label>Name</label>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Payee Name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Payee Account Number</label>
+          <input
+            type="number"
+            name="account_number"
+            class="form-control"
+            placeholder="Enter payee A/C No."
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-secondary">Add Payee</button>
+      </form>
+    </div>
+  </div>
+</div>

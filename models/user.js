@@ -23,6 +23,16 @@ const userSchema = new mongoose.Schema(
       type: Number,
       unique: true,
     },
+    payees: [
+      {
+        name: {
+          type: String,
+        },
+        account_number: {
+          type: Number,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
