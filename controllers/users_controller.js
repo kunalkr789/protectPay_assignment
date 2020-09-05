@@ -6,6 +6,7 @@ const accountNumber = require("nodejs-unique-numeric-id-generator");
 module.exports.dashboard = function (req, res) {
   return res.render("dashboard", {
     title: "dashboard",
+    payees: payees,
   });
 };
 
