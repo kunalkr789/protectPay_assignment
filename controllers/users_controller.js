@@ -100,7 +100,7 @@ module.exports.moneytransfer = function (req, res) {
       console.log(user);
       console.log(req.user._id);
       console.log(req.body.account_number);
-      if (user) {
+      if (user && req.user.balance >= req.body.balance) {
         User.findOne({ account_number: req.body.account_number }, function (
           err,
           user
@@ -121,7 +121,7 @@ module.exports.moneytransfer = function (req, res) {
           });
         });
       } else {
-        req.flash("error", "Payee alreay added to your list.");
+        req.flash("error", "Not enough amount in your account.");
         return res.redirect("back");
       }
     }
