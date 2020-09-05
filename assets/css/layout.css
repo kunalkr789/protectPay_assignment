@@ -33,11 +33,11 @@
 
 @media screen and (min-width: 768px) {
   .main {
-    margin-left: 50%;
+    margin-left: 40%;
   }
 
   .sidenav {
-    width: 50%;
+    width: 40%;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -77,4 +77,8 @@
 }
 .btn-black a {
   text-decoration: none;
+}
+
+.dashlink {
+  float: right;
 }

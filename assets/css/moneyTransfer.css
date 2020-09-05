@@ -1,0 +1,190 @@
+/* .first0 {
+  border-radius: 5px;
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+ 
+  
+}
+
+.first1 {
+  background-color: rgb(232, 231, 238);
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;  
+      }
+
+
+.first1 p{
+  margin-left: 1rem;
+  font-size: small;
+  font-weight: 100;
+  font-style: normal;
+  font-stretch: wider;
+  text-shadow: 0.5px 0.5px greenyellow;
+  color:green;
+} */
+
+/* css for category  */
+/* .box
+{
+  height: 30px;
+  width: 70px;
+  background-color: brown;
+  text-align: center;
+  margin-right: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+ }
+.box p{
+   margin-top:5px;
+  padding-top: 2px;
+   /* padding-left: 2px;  */
+/* text-align: center;
+  font-size:small;
+ font-stretch: extra-expanded;
+  font-style:sans-serif;
+  text-decoration-color: transparent;
+  
+  text-align: justify;
+  color:blue;
+  text-shadow: 0.5px 0.5px greenyellow;
+  
+}
+
+
+
+.first2 {
+ 
+  background-color: rgb(114, 236, 175);
+  height:35px;
+ 
+
+  
+ 
+ 
+  
+} */
+/* .first2 p{
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+   /* padding-left: 2px;  */
+/* text-align: center;
+  font-size:xx-small;
+ font-stretch: extra-expanded;
+  font-style:sans-serif;
+  text-decoration-color: transparent;
+  
+  
+  color:blue;
+  text-shadow: 0.5px 0.5px greenyellow;
+}  */
+
+.details {
+  height: 50px;
+  width: 95%;
+  background-color: rgb(199, 226, 218);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+ul li {
+  height: 100%;
+  width: 28%;
+
+  list-style: none;
+}
+
+ul li p {
+  margin-top: 10px;
+  padding-top: 2px;
+  padding-left: 2px;
+  text-align: center;
+  font-size: medium;
+  font-stretch: extra-expanded;
+  font-style: sans-serif;
+  text-decoration-color: transparent;
+
+  text-align: justify;
+  color: rgb(19, 19, 20);
+}
+ul li button {
+  margin-top: 5px;
+  float: right;
+  margin-right: 5px;
+}
+
+/* pop up */
+
+/* .open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+} */
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  /* bottom: 0;
+  right: 15px; */
+  margin: auto, 0;
+  margin-left: 60%;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type="number"],
+.form-container input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type="number"]:focus,
+.form-container input[type="password"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover,
+.open-button:hover {
+  opacity: 1;
+}

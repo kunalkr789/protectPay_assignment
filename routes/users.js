@@ -22,8 +22,7 @@ router.post(
   usersController.createSession
 );
 
-
-router.post("/moneyTransfer" , usersController.moneytransfer);
+router.post("/moneyTransfer", usersController.moneytransfer);
 router.post("/addPayee", usersController.addPayee);
 
 router.get("/logout", usersController.destroySession);
