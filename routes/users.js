@@ -9,8 +9,10 @@ router.get(
   passport.checkAuthentication,
   usersController.dashboard
 );
+
 router.get("/register", usersController.register);
 router.get("/login", usersController.logIn);
+router.get("/moneyTransfer" , usersController.moneyTransfer);
 
 router.post("/create", usersController.create);
 router.post(
