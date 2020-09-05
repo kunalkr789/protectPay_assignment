@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const signupMailer = require('../mailer/sign-up')
 const accountNumber = require("nodejs-unique-numeric-id-generator");
 
 module.exports.dashboard = function (req, res) {
@@ -6,22 +7,23 @@ module.exports.dashboard = function (req, res) {
     title: "dashboard",
   });
 };
+
 module.exports.register = function (req, res) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/users/dashboard");
-  }
+  // if (req.isAuthenticated()) {
+  //   return res.redirect("/users/dashboard");
+  // }
   return res.render("register", {
     title: "protectpay | register",
   });
 };
 
 module.exports.logIn = function (req, res) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/users/dashboard");
-  }
-  return res.render("login", {
-    title: "protectpay | login",
-  });
+   if (req.isAuthenticated()) {
+     return res.redirect("/users/dashboard");
+   }
+   return res.render("login", {
+     title: "protectpay | login",
+   });
 };
 
 // get the sign up data
@@ -55,6 +57,8 @@ module.exports.create = function (req, res) {
             console.log("error in creating user while signing up", err);
             return;
           } else {
+            signupMailer.signup(user);
+            req.flash("success", "Registered Successfully");
             return res.redirect("/users/login");
           }
         }
@@ -77,3 +81,14 @@ module.exports.destroySession = function (req, res) {
   req.flash("success", "Logged out Successfully");
   return res.redirect("/");
 };
+
+module.exports.moneyTransfer = function (req, res) {
+
+  return res.render("moneyTransfer", {
+    title: "protectpay | Transfer",
+  });
+};
+
+module.exports.moneytransfer = function (req, res) {
+ 
+}
