@@ -8,7 +8,7 @@ const payeeSchema = new mongoose.Schema(
     },
     account_number: {
       type: Number,
-      unique: true,
+      unique: false,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

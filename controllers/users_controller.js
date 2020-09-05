@@ -102,25 +102,36 @@ module.exports.addPayee = function (req, res) {
     }
 
     console.log(req.body.account_number);
-    // let user = User.find({
-    //   account_number: req.body.account_number,
-    //   name: req.body.name,
-    // });
+    console.log(req.user._id);
     console.log(user);
     if (user) {
-      Payee.create(
-        {
-          name: req.body.name,
-          account_number: req.body.account_number,
-          user: req.user._id,
-        },
+      Payee.findOne(
+        { account_number: req.body.account_number, user: req.user._id },
         function (err, user) {
           if (err) {
-            console.log("error in adding payee", err);
+            console.log("error in finding payee");
             return;
+          }
+          if (!user) {
+            Payee.create(
+              {
+                name: req.body.name,
+                account_number: req.body.account_number,
+                user: req.user._id,
+              },
+              function (err, user) {
+                if (err) {
+                  console.log("error in adding payee", err);
+                  return;
+                } else {
+                  req.flash("success", "payee added Successfully");
+                  return res.redirect("/users/dashboard");
+                }
+              }
+            );
           } else {
-            req.flash("success", "payee added Successfully");
-            return res.redirect("/users/dashboard");
+            req.flash("error", "Payee alreay added to your list.");
+            return res.redirect("back");
           }
         }
       );
