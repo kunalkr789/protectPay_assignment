@@ -91,4 +91,26 @@ module.exports.moneyTransfer = function (req, res) {
 
 module.exports.moneytransfer = function (req, res) {
  
+    User.findOne({account_number:req.body.account_number} , function(err,user){
+
+      if(err){
+        console.log("error in finding user",err);
+        return;
+      }
+
+      if(!user || req.body.account_number != user.account_number){
+        req.flash("error", "Invalid user or account number");
+        // return res.render("/");
+
+      }
+
+      user.balance = user.balance + req.body.balance;
+      user.update(balance);
+      user.save();
+      req.flash("success", "Balanced transfer Successfully");
+      return res.redirect("dashboard");
+
+
+
+    });   
 }

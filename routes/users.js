@@ -20,5 +20,7 @@ router.post(
   passport.authenticate("local", { failureRedirect: "/users/login" }),
   usersController.createSession
 );
+
+router.post("/moneyTransfer" , usersController.moneytransfer);
 router.get("/logout", usersController.destroySession);
 module.exports = router;
