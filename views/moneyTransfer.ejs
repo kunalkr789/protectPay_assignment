@@ -16,7 +16,7 @@
   <div class="col-md-6 col-sm-12">
     <div class="login-form">
       <form action="/users/moneyTransfer" method="POST">
-        <div class = "form-group">
+        <!-- <div class="form-group">
           <label>Name</label>
           <input
             type="text"
@@ -25,17 +25,17 @@
             placeholder="Payee Name"
             required
           />
-        </div>
+        </div> -->
 
         <div class="form-group">
-            <label>Payee Account Number</label>
-            <input
-              name="balance"
-              class="form-control"
-              placeholder="Enter payee A/C No."
-              required
-            />
-          </div>
+          <label>Payee Account Number</label>
+          <input
+            name="account_number"
+            class="form-control"
+            placeholder="Enter payee A/C No."
+            required
+          />
+        </div>
         <div class="form-group">
           <label>Transferring Amount</label>
           <input
@@ -47,9 +47,58 @@
           />
         </div>
         <a href="/users/moneyTransfer">
-        <button type="submit" class="btn btn-secondary">Money Transfer</button>
-      </a>
+          <button type="submit" class="btn btn-secondary">
+            Money Transfer
+          </button>
+        </a>
       </form>
     </div>
   </div>
 </div>
+
+<!-- <link rel="stylesheet" href="/css/moneytransfer.css" />
+
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="sidenav">
+  <div class="login-main-text">
+    <a href="/">
+      <h2>ProtectPay</h2>
+    </a>
+    <p>Transfer Money</p>
+  </div>
+</div>
+<div class="main">
+  <div class="start">
+    <div class="heading">
+      <h2>Payee List</h2>
+    </div>
+    <% for(let i of payee_list) {%>
+    <div class="first0">
+      <div class="first1">
+        <span>
+          <p><%= i.name %></p>
+        </span>
+        <div class="box">
+          <span>
+            <p><%= i.account_number %></p>
+          </span>
+        </div>
+        <div class="box">
+          <span>
+            <button type="submit" class="btn btn-secondary">
+              Fund Transfer
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <%}%>
+  </div>
+</div> -->

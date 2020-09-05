@@ -6,7 +6,6 @@ const accountNumber = require("nodejs-unique-numeric-id-generator");
 module.exports.dashboard = function (req, res) {
   return res.render("dashboard", {
     title: "dashboard",
-    payees: payees,
   });
 };
 
@@ -91,32 +90,56 @@ module.exports.moneyTransfer = function (req, res) {
 };
 
 module.exports.moneytransfer = function (req, res) {
- 
-    User.findOne({account_number:req.body.account_number} , function(err,user){
-
-      if(err){
-        console.log("error in finding user",err);
+  Payee.findOne(
+    { account_number: req.body.account_number, user: req.user._id },
+    function (err, user) {
+      if (err) {
+        console.log("error in finding user", err);
         return;
       }
-
-      if(!user || req.body.account_number != user.account_number){
-        req.flash("error", "Invalid user or account number");
-        // return res.render("/");
-
+      console.log(user);
+      console.log(req.user._id);
+      console.log(req.body.account_number);
+      if (user) {
+        User.findOne({ account_number: req.body.account_number }, function (
+          err,
+          user
+        ) {
+          if (!user) {
+            req.flash("error", "No account found");
+            return res.redirect("/edit");
+          }
+          req.user.balance =
+            parseInt(req.user.balance) - parseInt(req.body.balance);
+          console.log(req.user.balance);
+          req.user.save();
+          var balance = parseInt(req.body.balance) + parseInt(user.balance);
+          user.balance = balance;
+          user.save(function (err) {
+            req.flash("Sucess", "Amount transferred successfully.");
+            res.redirect("/users/dashboard");
+          });
+        });
+      } else {
+        req.flash("error", "Payee alreay added to your list.");
+        return res.redirect("back");
       }
+    }
+  );
+};
 
-      user.balance = user.balance + req.body.balance;
-      user.update(balance);
-      user.save();
-      req.flash("success", "Balanced transfer Successfully");
-      return res.redirect("dashboard");
-
-
-
-    });   
-}
-=======
-module.exports.moneytransfer = function (req, res) {};
+module.exports.moneyTransfer = function (req, res) {
+  Payee.find({}, function (err, listAll) {
+    if (err) {
+      console.log("error in fetching work from db");
+      return;
+    }
+    return res.render("moneyTransfer", {
+      title: "moneyTransfer",
+      payee_list: listAll,
+    });
+  });
+};
 
 module.exports.addPayee = function (req, res) {
   User.findOne({ account_number: req.body.account_number }, function (
@@ -127,10 +150,6 @@ module.exports.addPayee = function (req, res) {
       console.log("error in finding payee");
       return;
     }
-
-    console.log(req.body.account_number);
-    console.log(req.user._id);
-    console.log(user);
     if (user) {
       Payee.findOne(
         { account_number: req.body.account_number, user: req.user._id },
