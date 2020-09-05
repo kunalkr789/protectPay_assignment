@@ -21,15 +21,44 @@
     <div class="heading">
       <h2>Payee List</h2>
     </div>
-    <% for(let i of payee_list) {%>
+    <div class="card text-center">
+      <div class="card-header">
+        Select Payee from the list.
+      </div>
+      <div class="card-body">
+        <select class="browser-default custom-select custom-select-lg mb-3" id="payee">
+          <option>Select Payee</option>
+          <% for(let i of payee_list) {%>
+          <option value="<%= i.account_number %>"><%= i.name %>  (Ac. no. <%= i.account_number %>)</option>
+          <%}%>
+        </select>
+        <h5 class="card-title"></h5>
+        <p class="card-text"></p>
+        <button
+          type="submit"
+          class="open-button btn btn-secondary"
+          onclick="openForm()"
+        >
+          One time payment
+        </button>
+        <button
+          type="submit"
+          class="open-button btn btn-secondary"
+          onclick="openForm1()"
+        >
+          Schedule Payment
+        </button>
+      </div>
+    </div>
+    <!-- <% for(let i of payee_list) {%>     
     <ul class="details">
       <li><p><%= i.name %></p></li>
       <li><p>Account: <%= i.account_number %></p></li>
-      <!-- <li><button id="show" type="submit" class="btn btn-secondary" >Fund Transfer</button></li> -->
       <li>
         <button
           type="submit"
           class="open-button btn btn-secondary"
+          id="pay"
           onclick="openForm(<%= i.account_number %>)"
         >
           One time payment
@@ -45,10 +74,9 @@
         </button>
       </li>
 
-      <!-- <button class="open-button" onclick="openForm()">Open Form</button> -->
     </ul>
 
-    <%}%>
+    <%}%> -->
   </div>
 </div>
 
@@ -76,12 +104,23 @@
 </div>
 
 <script>
-  function openForm(acc) {
+  function openForm() {
     document.getElementById("myForm").style.display = "block";
+    //var value = getValue();
+    var e = document.getElementById("payee");
+    var acc = e.options[e.selectedIndex].value;
     document.getElementById("act").value = acc;
   }
 
   function closeForm() {
     document.getElementById("myForm").style.display = "none";
+  }
+
+  function getValue(selectObject) {
+    var e = document.getElementById("payee");
+    var strUser = e.options[e.selectedIndex].value;
+    var value = selectObject.value; 
+    console.log(value);
+    return value;
   }
 </script>
