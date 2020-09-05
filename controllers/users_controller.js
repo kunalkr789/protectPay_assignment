@@ -1,5 +1,6 @@
 const User = require("../models/user");
-const signupMailer = require('../mailer/sign-up')
+const Payee = require("../models/payee");
+const signupMailer = require("../mailer/sign-up");
 const accountNumber = require("nodejs-unique-numeric-id-generator");
 
 module.exports.dashboard = function (req, res) {
@@ -18,12 +19,12 @@ module.exports.register = function (req, res) {
 };
 
 module.exports.logIn = function (req, res) {
-   if (req.isAuthenticated()) {
-     return res.redirect("/users/dashboard");
-   }
-   return res.render("login", {
-     title: "protectpay | login",
-   });
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/dashboard");
+  }
+  return res.render("login", {
+    title: "protectpay | login",
+  });
 };
 
 // get the sign up data
@@ -83,12 +84,49 @@ module.exports.destroySession = function (req, res) {
 };
 
 module.exports.moneyTransfer = function (req, res) {
-
   return res.render("moneyTransfer", {
     title: "protectpay | Transfer",
   });
 };
 
-module.exports.moneytransfer = function (req, res) {
- 
-}
+module.exports.moneytransfer = function (req, res) {};
+
+module.exports.addPayee = function (req, res) {
+  User.findOne({ account_number: req.body.account_number }, function (
+    err,
+    user
+  ) {
+    if (err) {
+      console.log("error in finding payee");
+      return;
+    }
+
+    console.log(req.body.account_number);
+    // let user = User.find({
+    //   account_number: req.body.account_number,
+    //   name: req.body.name,
+    // });
+    console.log(user);
+    if (user) {
+      Payee.create(
+        {
+          name: req.body.name,
+          account_number: req.body.account_number,
+          user: req.user._id,
+        },
+        function (err, user) {
+          if (err) {
+            console.log("error in adding payee", err);
+            return;
+          } else {
+            req.flash("success", "payee added Successfully");
+            return res.redirect("/users/dashboard");
+          }
+        }
+      );
+    } else {
+      req.flash("error", "Payee does not exist.");
+      return res.redirect("back");
+    }
+  });
+};
