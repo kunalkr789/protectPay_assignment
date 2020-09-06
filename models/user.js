@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      unique:true
     },
     name: {
       type: String,
@@ -23,16 +24,12 @@ const userSchema = new mongoose.Schema(
       type: Number,
       unique: true,
     },
-    payees: [
-      {
-        name: {
-          type: String,
-        },
-        account_number: {
-          type: Number,
-        },
-      },
-    ],
+    term: {
+      type: String,
+    },
+    lastTrans: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
