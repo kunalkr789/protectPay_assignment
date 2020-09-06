@@ -6,7 +6,10 @@ const accountNumber = require("nodejs-unique-numeric-id-generator");
 const cron = require("node-cron");
 
 module.exports.dashboard = function (req, res) {
-  res.header('Cache-Control' , 'no-cache, private , no-store , must-revalidate , max-stale=0 , post-check=0, pre-check=0');
+  res.header(
+    "Cache-Control",
+    "no-cache, private , no-store , must-revalidate , max-stale=0 , post-check=0, pre-check=0"
+  );
   res.header(
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
@@ -108,55 +111,30 @@ module.exports.moneytransfer = function (req, res) {
       console.log(req.user._id);
       console.log(req.body.account_number);
       if (user && req.user.balance >= req.body.balance) {
-        User.findOne({ account_number: req.body.account_number }, function (err, user) {
-          if (!user) {
-            req.flash("error", "No account found");
-            return res.redirect("/");
-          }
-          req.user.balance = parseInt(req.user.balance) - parseInt(req.body.balance);
-          console.log(req.user.balance);
-          console.log(req.body.balance);
-          req.user.save();
-          var balance = parseInt(req.body.balance) + parseInt(user.balance);
-          user.balance = balance;
-          fundTransferMailer.fundTransferCredit(user);
-          fundTransferMailer.fundTransferDebit(req.user);
-          user.save();
-            
-            req.flash("success", "Amount transferred successfully");
-            return res.redirect("/users/dashboard");
-          });
-        
-      console.log(req.user._id);
-      console.log(req.body.account_number);
-      if (user && req.user.balance >= req.body.balance) {
-        req.flash("Success", "Amount transferred successfully.");
         User.findOne({ account_number: req.body.account_number }, function (
           err,
           user
         ) {
           if (!user) {
             req.flash("error", "No account found");
-            return res.redirect("back");
-          } else {
-            req.user.balance =
-              parseInt(req.user.balance) - parseInt(req.body.balance);
-            console.log(req.user.balance);
-            req.user.save();
-            var balance = parseInt(req.body.balance) + parseInt(user.balance);
-            user.balance = balance;
-            user.save(function (err) {
-              req.flash("Success", "Amount transferred successfully.");
-              //console.log("transfered");
-              //return res.redirect("back");
-            });
+            return res.redirect("/");
           }
-        });
-        req.flash("Success", "Amount transferred successfully.");
-        console.log("transfered");
-        //console.log(req);
+          req.user.balance =
+            parseInt(req.user.balance) - parseInt(req.body.balance);
+          req.user.lastTrans = parseInt(req.body.balance);
+          console.log(req.user.balance);
+          console.log(req.body.balance);
+          req.user.save();
+          var balance = parseInt(req.body.balance) + parseInt(user.balance);
+          user.balance = balance;
+          user.lastTrans = parseInt(req.body.balance);
+          fundTransferMailer.fundTransferCredit(user);
+          fundTransferMailer.fundTransferDebit(req.user);
+          user.save();
 
-        return res.redirect("/users/dashboard");
+          req.flash("success", "Amount transferred successfully");
+          return res.redirect("/users/dashboard");
+        });
       } else {
         req.flash("error", "Not enough amount in your account.");
         return res.redirect("back");
@@ -166,7 +144,6 @@ module.exports.moneytransfer = function (req, res) {
 };
 
 module.exports.moneyTransfer = function (req, res) {
-
   Payee.find({ user: req.user._id }, function (err, listAll) {
     if (err) {
       console.log("error in fetching work from db");

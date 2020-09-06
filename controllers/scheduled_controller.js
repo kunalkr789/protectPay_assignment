@@ -34,11 +34,13 @@ module.exports.ScheduleTransfer = function (req, res) {
               cron.schedule(date, function () {
                 req.user.balance =
                   parseInt(req.user.balance) - parseInt(req.body.balance);
+                req.user.lastTrans = parseInt(req.body.balance);
                 console.log(req.user.balance);
                 req.user.save();
                 var balance =
                   parseInt(req.body.balance) + parseInt(user.balance);
                 user.balance = balance;
+                user.lastTrans = parseInt(req.body.balance);
                 user.save(function (err) {
                   //console.log("transfered");
                   //return res.redirect("back");
