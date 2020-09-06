@@ -1,62 +1,4 @@
-<link
-  href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-  rel="stylesheet"
-  id="bootstrap-css"
-/>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-<div class="sidenav">
-  <div class="login-main-text">
-    <a href="/"><h2>ProtectPay</h2></a>
-    <p>Transfer Money</p>
-  </div>
-</div>
-<div class="main">
-  <div class="col-md-6 col-sm-12">
-    <div class="login-form">
-      <form action="/users/moneyTransfer" method="POST">
-        <!-- <div class="form-group">
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            class="form-control"
-            placeholder="Payee Name"
-            required
-          />
-        </div> -->
-
-        <div class="form-group">
-          <label>Payee Account Number</label>
-          <input
-            name="account_number"
-            class="form-control"
-            placeholder="Enter payee A/C No."
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label>Transferring Amount</label>
-          <input
-            type="number"
-            name="balance"
-            class="form-control"
-            placeholder="Amount"
-            required
-          />
-        </div>
-        <a href="/users/moneyTransfer">
-          <button type="submit" class="btn btn-secondary">
-            Money Transfer
-          </button>
-        </a>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- <link rel="stylesheet" href="/css/moneytransfer.css" />
+<link rel="stylesheet" href="/css/moneytransfer.css" />
 
 <link
   href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -65,10 +7,8 @@
 />
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
 <div class="sidenav">
   <div class="login-main-text">
-    <a href="/">
       <h2>ProtectPay</h2>
     </a>
     <p>Transfer Money</p>
@@ -76,29 +16,127 @@
 </div>
 <div class="main">
   <div class="start">
+    <a class="dashlink" href="/users/dashboard">
+      <button type="submit" class="btn btn-black">Dashboard</button></a>
     <div class="heading">
       <h2>Payee List</h2>
     </div>
-    <% for(let i of payee_list) {%>
-    <div class="first0">
-      <div class="first1">
-        <span>
-          <p><%= i.name %></p>
-        </span>
-        <div class="box">
-          <span>
-            <p><%= i.account_number %></p>
-          </span>
-        </div>
-        <div class="box">
-          <span>
-            <button type="submit" class="btn btn-secondary">
-              Fund Transfer
-            </button>
-          </span>
-        </div>
+    <div class="card text-center">
+      <div class="card-header">
+        Select Payee from the list.
+      </div>
+      <div class="card-body">
+        <select class="browser-default custom-select custom-select-lg mb-3" id="payee">
+          <option>Select Payee</option>
+          <% for(let i of payee_list) {%>
+          <option value="<%= i.account_number %>"><%= i.name %>  (A/C No. <%= i.account_number %>)</option>
+          <%}%>
+        </select>
+        <h5 class="card-title"></h5>
+        <p class="card-text"></p>
+        <button
+          type="submit"
+          class="open-button btn btn-secondary"
+          onclick="openForm()"
+        >
+          One time payment
+        </button>
+        <button
+          type="submit"
+          class="open-button btn btn-secondary"
+          onclick="openForm1()"
+        >
+          Schedule Payment
+        </button>
       </div>
     </div>
-    <%}%>
+    
   </div>
-</div> -->
+</div>
+
+<div class="form-popup" id="myForm">
+  <form action="/users/moneyTransfer" method="POST" class="form-container">
+    <!-- <h1 name="account_number" id="act"></h1> -->
+    <div class="form-group">
+      <b>Account number</b>
+      <input
+        type="number"
+        name="account_number"
+        class="form-control"
+        placeholder="Amount"
+        id="act"
+        readonly
+      />
+    </div>
+    <label for="amount"><b>Add Amount</b></label>
+    <input type="number" placeholder="Enter Amount" name="balance" required />
+    <button type="submit" class="btn">Transfer</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">
+      Cancel
+    </button>
+  </form>
+</div>
+
+<div class="form-popup" id="myForm1">
+  <form action="/users/ScheduleTransfer" method="POST" class="form-container">
+    <!-- <h1 name="account_number" id="act"></h1> -->
+    <div class="form-group">
+      <b>Account number</b>
+      <input type="number" name="account_number" class="form-control" placeholder="Amount" id="act1" readonly />
+    </div>
+    <label for="amount"><b>Add Amount</b></label>
+    <input type="number" placeholder="Enter Amount" name="balance" required />
+
+    <b>Select Term</b>
+    <select name="term" class="browser-default custom-select custom-select-lg mb-3" id="payee">
+      <option value="Daily">Daily</option>
+      <option value="Monthly">Monthly</option>
+      <option value="Quartely">Quartely</option>
+    </select>
+
+    <!-- <label for="Date"><b>Schedule Date<b></label>
+    <input type="date" id="Date" name="Date" class="form-control" required> -->
+
+    <button type="submit" class="btn">Transfer</button>
+    <button type="button" class="btn cancel" onclick="closeForm1()">
+      Cancel
+    </button>
+  </form>
+</div>
+
+
+
+<script>
+  function openForm() {
+    document.getElementById("myForm").style.display = "block";
+    //var value = getValue();
+    var e = document.getElementById("payee");
+    var acc = e.options[e.selectedIndex].value;
+    document.getElementById("act").value = acc;
+  }
+
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+  }
+
+   function openForm1() {
+      document.getElementById("myForm1").style.display = "block";
+      //var value = getValue();
+      var e = document.getElementById("payee");
+      var acc = e.options[e.selectedIndex].value;
+      document.getElementById("act1").value = acc;
+      console.log(acc);
+    }
+
+   function closeForm1() {
+      document.getElementById("myForm1").style.display = "none";
+    }
+
+  function getValue(selectObject) {
+    var e = document.getElementById("payee");
+    var strUser = e.options[e.selectedIndex].value;
+    var value = selectObject.value; 
+    console.log(value);
+    return value;
+  }
+</script>

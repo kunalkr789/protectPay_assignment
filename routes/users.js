@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 
 const usersController = require("../controllers/users_controller");
+const scheduleController = require("../controllers/scheduled_controller");
 
 router.get(
   "/dashboard",
@@ -22,8 +23,8 @@ router.post(
   usersController.createSession
 );
 
-
-router.post("/moneyTransfer" , usersController.moneytransfer);
+router.post("/ScheduleTransfer", scheduleController.ScheduleTransfer);
+router.post("/moneyTransfer", usersController.moneytransfer);
 router.post("/addPayee", usersController.addPayee);
 
 router.get("/logout", usersController.destroySession);
