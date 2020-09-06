@@ -8,8 +8,8 @@ let transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "********",
-    pass: "*******",
+    user: "anshugargg09@gmail.com",
+    pass: "9717063893",
   },
   //to remove transport layer security of mailing and another option is to disable antivirus if dont want to use this
   tls: {

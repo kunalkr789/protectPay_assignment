@@ -1,10 +1,12 @@
 const User = require("../models/user");
 const Payee = require("../models/payee");
 const signupMailer = require("../mailer/sign-up");
+const fundTransferMailer = require("../mailer/fund_transfer");
 const accountNumber = require("nodejs-unique-numeric-id-generator");
 const cron = require("node-cron");
 
 module.exports.dashboard = function (req, res) {
+  res.header('Cache-Control' , 'no-cache, private , no-store , must-revalidate , max-stale=0 , post-check=0, pre-check=0');
   res.header(
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
@@ -88,11 +90,11 @@ module.exports.destroySession = function (req, res) {
   return res.redirect("/");
 };
 
-module.exports.moneyTransfer = function (req, res) {
-  return res.render("moneyTransfer", {
-    title: "protectpay | Transfer",
-  });
-};
+// module.exports.moneyTransfer = function (req, res) {
+//   return res.render("moneyTransfer", {
+//     title: "protectpay | Transfer",
+//   });
+// };
 
 module.exports.moneytransfer = function (req, res) {
   Payee.findOne(
@@ -102,6 +104,29 @@ module.exports.moneytransfer = function (req, res) {
         console.log("error in finding user", err);
         return;
       }
+      console.log(user);
+      console.log(req.user._id);
+      console.log(req.body.account_number);
+      if (user && req.user.balance >= req.body.balance) {
+        User.findOne({ account_number: req.body.account_number }, function (err, user) {
+          if (!user) {
+            req.flash("error", "No account found");
+            return res.redirect("/");
+          }
+          req.user.balance = parseInt(req.user.balance) - parseInt(req.body.balance);
+          console.log(req.user.balance);
+          console.log(req.body.balance);
+          req.user.save();
+          var balance = parseInt(req.body.balance) + parseInt(user.balance);
+          user.balance = balance;
+          fundTransferMailer.fundTransferCredit(user);
+          fundTransferMailer.fundTransferDebit(req.user);
+          user.save();
+            
+            req.flash("success", "Amount transferred successfully");
+            return res.redirect("/users/dashboard");
+          });
+        
       console.log(req.user._id);
       console.log(req.body.account_number);
       if (user && req.user.balance >= req.body.balance) {
@@ -141,6 +166,7 @@ module.exports.moneytransfer = function (req, res) {
 };
 
 module.exports.moneyTransfer = function (req, res) {
+
   Payee.find({ user: req.user._id }, function (err, listAll) {
     if (err) {
       console.log("error in fetching work from db");
