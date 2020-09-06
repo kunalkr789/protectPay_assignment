@@ -26,6 +26,7 @@ router.post(
   usersController.createSession
 );
 
+<<<<<<< HEAD
 //for money transfer according to schedule
 router.post("/ScheduleTransfer", scheduleController.ScheduleTransfer);
 
@@ -33,6 +34,10 @@ router.post("/ScheduleTransfer", scheduleController.ScheduleTransfer);
 router.post("/moneyTransfer", usersController.moneytransfer);
 
 //to add payee for money transfer
+=======
+router.post("/ScheduleTransfer", scheduleController.ScheduleTransfer);
+router.post("/moneyTransfer", usersController.moneytransfer);
+>>>>>>> af2a9756cdb3c3767dbdcb4ad6c6859bbf87b84c
 router.post("/addPayee", usersController.addPayee);
 
 //to destroy the session
