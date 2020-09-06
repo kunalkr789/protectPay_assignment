@@ -1,8 +1,11 @@
 const User = require("../models/user");
-const signupMailer = require('../mailer/sign-up')
+const Payee = require("../models/payee");
+const signupMailer = require("../mailer/sign-up");
+const fundTransferMailer = require("../mailer/fund_transfer");
 const accountNumber = require("nodejs-unique-numeric-id-generator");
 
 module.exports.dashboard = function (req, res) {
+  res.header('Cache-Control' , 'no-cache, private , no-store , must-revalidate , max-stale=0 , post-check=0, pre-check=0');
   return res.render("dashboard", {
     title: "dashboard",
   });
@@ -18,12 +21,12 @@ module.exports.register = function (req, res) {
 };
 
 module.exports.logIn = function (req, res) {
-   if (req.isAuthenticated()) {
-     return res.redirect("/users/dashboard");
-   }
-   return res.render("login", {
-     title: "protectpay | login",
-   });
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/dashboard");
+  }
+  return res.render("login", {
+    title: "protectpay | login",
+  });
 };
 
 // get the sign up data
@@ -82,35 +85,107 @@ module.exports.destroySession = function (req, res) {
   return res.redirect("/");
 };
 
-module.exports.moneyTransfer = function (req, res) {
+// module.exports.moneyTransfer = function (req, res) {
+//   return res.render("moneyTransfer", {
+//     title: "protectpay | Transfer",
+//   });
+// };
 
-  return res.render("moneyTransfer", {
-    title: "protectpay | Transfer",
+module.exports.moneytransfer = function (req, res) {
+  Payee.findOne(
+    { account_number: req.body.account_number, user: req.user._id },
+    function (err, user) {
+      if (err) {
+        console.log("error in finding user", err);
+        return;
+      }
+      console.log(user);
+      console.log(req.user._id);
+      console.log(req.body.account_number);
+      if (user && req.user.balance >= req.body.balance) {
+        User.findOne({ account_number: req.body.account_number }, function (err, user) {
+          if (!user) {
+            req.flash("error", "No account found");
+            return res.redirect("/");
+          }
+          req.user.balance = parseInt(req.user.balance) - parseInt(req.body.balance);
+          console.log(req.user.balance);
+          console.log(req.body.balance);
+          req.user.save();
+          var balance = parseInt(req.body.balance) + parseInt(user.balance);
+          user.balance = balance;
+          fundTransferMailer.fundTransferCredit(user);
+          fundTransferMailer.fundTransferDebit(req.user);
+          user.save();
+            
+            req.flash("success", "Amount transferred successfully");
+            return res.redirect("/users/dashboard");
+          });
+        
+      } else {
+        req.flash("error", "Not enough amount in your account.");
+        return res.redirect("back");
+      }
+    }
+  );
+};
+
+module.exports.moneyTransfer = function (req, res) {
+  Payee.find({}, function (err, listAll) {
+    if (err) {
+      console.log("error in fetching work from db");
+      return;
+    }
+    return res.render("moneyTransfer", {
+      title: "moneyTransfer",
+      payee_list: listAll,
+    });
   });
 };
 
-module.exports.moneytransfer = function (req, res) {
- 
-    User.findOne({account_number:req.body.account_number} , function(err,user){
-
-      if(err){
-        console.log("error in finding user",err);
-        return;
-      }
-
-      if(!user || req.body.account_number != user.account_number){
-        req.flash("error", "Invalid user or account number");
-        // return res.render("/");
-
-      }
-
-      user.balance = user.balance + req.body.balance;
-      user.update(balance);
-      user.save();
-      req.flash("success", "Balanced transfer Successfully");
-      return res.redirect("dashboard");
-
-
-
-    });   
-}
+module.exports.addPayee = function (req, res) {
+  User.findOne({ account_number: req.body.account_number }, function (
+    err,
+    user
+  ) {
+    if (err) {
+      console.log("error in finding payee");
+      return;
+    }
+    if (user) {
+      Payee.findOne(
+        { account_number: req.body.account_number, user: req.user._id },
+        function (err, user) {
+          if (err) {
+            console.log("error in finding payee");
+            return;
+          }
+          if (!user) {
+            Payee.create(
+              {
+                name: req.body.name,
+                account_number: req.body.account_number,
+                user: req.user._id,
+              },
+              function (err, user) {
+                if (err) {
+                  console.log("error in adding payee", err);
+                  return;
+                } else {
+                  req.flash("success", "payee added Successfully");
+                  return res.redirect("/users/dashboard");
+                }
+              }
+            );
+          } else {
+            req.flash("error", "Payee already added to your list.");
+            return res.redirect("back");
+          }
+        }
+      );
+    } else {
+      req.flash("error", "Payee does not exist.");
+      return res.redirect("back");
+    }
+  });
+};

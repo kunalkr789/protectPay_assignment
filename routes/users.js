@@ -12,7 +12,8 @@ router.get(
 
 router.get("/register", usersController.register);
 router.get("/login", usersController.logIn);
-router.get("/moneyTransfer" , usersController.moneyTransfer);
+router.get("/moneyTransfer", usersController.moneyTransfer);
+//router.get("/addPayee", usersController.addPayee);
 
 router.post("/create", usersController.create);
 router.post(
@@ -21,6 +22,9 @@ router.post(
   usersController.createSession
 );
 
+
 router.post("/moneyTransfer" , usersController.moneytransfer);
+router.post("/addPayee", usersController.addPayee);
+
 router.get("/logout", usersController.destroySession);
 module.exports = router;
