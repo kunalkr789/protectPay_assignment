@@ -56,16 +56,12 @@
 
           <li>
             <div class="title">Account Number :</div>
-            <div class="text">
-              <a href><%= user.account_number %></a>
-            </div>
+            <div class="text"><%= user.account_number %></div>
           </li>
 
           <li>
             <div class="title">Account Balance :</div>
-            <div class="text">
-              <a href><%= user.balance %></a>
-            </div>
+            <div class="text"><%= user.balance %> INR</div>
           </li>
         </ul>
         <a href="/users/logout"
@@ -80,32 +76,35 @@
   </div>
 </div>
 <div class="main">
-  <div class="col-md-6 col-sm-12">
-    <div class="login-form">
-      <form action="/users/addPayee" method="POST">
-        <div class="form-group">
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            class="form-control"
-            placeholder="Payee Name"
-            required
-          />
-        </div>
+  <div class="personal-info">
+    <h2>Add Payee</h2>
+    <div class="col-md-6 col-sm-12">
+      <div class="login-form">
+        <form action="/users/addPayee" method="POST">
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Payee Name"
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label>Payee Account Number</label>
-          <input
-            type="number"
-            name="account_number"
-            class="form-control"
-            placeholder="Enter payee A/C No."
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-secondary">Add Payee</button>
-      </form>
+          <div class="form-group">
+            <label>Payee Account Number</label>
+            <input
+              type="number"
+              name="account_number"
+              class="form-control"
+              placeholder="Enter payee A/C No."
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-secondary">Add Payee</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

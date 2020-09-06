@@ -133,18 +133,19 @@ ul li button {
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: fixed;
   /* bottom: 0;
   right: 15px; */
+  width: 40%;
   margin: auto, 0;
-  margin-left: 60%;
+  margin-left: 40%;
   border: 3px solid #f1f1f1;
-  z-index: 9;
+  z-index: 1;
 }
 
 /* Add styles to the form container */
 .form-container {
-  max-width: 300px;
+  max-width: 90%;
+  margin-left: 5%;
   padding: 10px;
   background-color: white;
 }

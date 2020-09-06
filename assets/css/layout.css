@@ -15,12 +15,6 @@
   margin-top: 1%;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {
-    padding-top: 15px;
-  }
-}
-
 @media screen and (max-width: 450px) {
   .login-form {
     margin-top: 10%;
@@ -33,11 +27,11 @@
 
 @media screen and (min-width: 768px) {
   .main {
-    margin-left: 40%;
+    margin-left: 20%;
   }
 
   .sidenav {
-    width: 40%;
+    width: 20%;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -45,7 +39,7 @@
   }
 
   .login-form {
-    margin-top: 20%;
+    margin-top: 5%;
   }
 
   .register-form {
@@ -81,4 +75,12 @@
 
 .dashlink {
   float: right;
+}
+.card-body {
+  background-color: bisque;
+}
+.card-header {
+  background-color: bisque;
+  text-transform: full-width;
+  font-size: large;
 }

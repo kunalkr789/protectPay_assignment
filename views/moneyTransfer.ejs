@@ -29,7 +29,7 @@
         <select class="browser-default custom-select custom-select-lg mb-3" id="payee">
           <option>Select Payee</option>
           <% for(let i of payee_list) {%>
-          <option value="<%= i.account_number %>"><%= i.name %>  (Ac. no. <%= i.account_number %>)</option>
+          <option value="<%= i.account_number %>"><%= i.name %>  (A/C No. <%= i.account_number %>)</option>
           <%}%>
         </select>
         <h5 class="card-title"></h5>
@@ -50,33 +50,7 @@
         </button>
       </div>
     </div>
-    <!-- <% for(let i of payee_list) {%>     
-    <ul class="details">
-      <li><p><%= i.name %></p></li>
-      <li><p>Account: <%= i.account_number %></p></li>
-      <li>
-        <button
-          type="submit"
-          class="open-button btn btn-secondary"
-          id="pay"
-          onclick="openForm(<%= i.account_number %>)"
-        >
-          One time payment
-        </button>
-      </li>
-      <li>
-        <button
-          type="submit"
-          class="open-button btn btn-secondary"
-          onclick="openForm1()"
-        >
-          Schedule payment
-        </button>
-      </li>
-
-    </ul>
-
-    <%}%> -->
+    
   </div>
 </div>
 
@@ -103,6 +77,35 @@
   </form>
 </div>
 
+<div class="form-popup" id="myForm1">
+  <form action="/users/ScheduleTransfer" method="POST" class="form-container">
+    <!-- <h1 name="account_number" id="act"></h1> -->
+    <div class="form-group">
+      <b>Account number</b>
+      <input type="number" name="account_number" class="form-control" placeholder="Amount" id="act1" readonly />
+    </div>
+    <label for="amount"><b>Add Amount</b></label>
+    <input type="number" placeholder="Enter Amount" name="balance" required />
+
+    <b>Select Term</b>
+    <select name="term" class="browser-default custom-select custom-select-lg mb-3" id="payee">
+      <option value="Daily">Daily</option>
+      <option value="Monthly">Monthly</option>
+      <option value="Quartely">Quartely</option>
+    </select>
+
+    <!-- <label for="Date"><b>Schedule Date<b></label>
+    <input type="date" id="Date" name="Date" class="form-control" required> -->
+
+    <button type="submit" class="btn">Transfer</button>
+    <button type="button" class="btn cancel" onclick="closeForm1()">
+      Cancel
+    </button>
+  </form>
+</div>
+
+
+
 <script>
   function openForm() {
     document.getElementById("myForm").style.display = "block";
@@ -115,6 +118,19 @@
   function closeForm() {
     document.getElementById("myForm").style.display = "none";
   }
+
+   function openForm1() {
+      document.getElementById("myForm1").style.display = "block";
+      //var value = getValue();
+      var e = document.getElementById("payee");
+      var acc = e.options[e.selectedIndex].value;
+      document.getElementById("act1").value = acc;
+      console.log(acc);
+    }
+
+   function closeForm1() {
+      document.getElementById("myForm1").style.display = "none";
+    }
 
   function getValue(selectObject) {
     var e = document.getElementById("payee");

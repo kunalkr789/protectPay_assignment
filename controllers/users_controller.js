@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Payee = require("../models/payee");
 const signupMailer = require("../mailer/sign-up");
 const accountNumber = require("nodejs-unique-numeric-id-generator");
+const cron = require("node-cron");
 
 module.exports.dashboard = function (req, res) {
   res.header(
@@ -104,6 +105,7 @@ module.exports.moneytransfer = function (req, res) {
       console.log(req.user._id);
       console.log(req.body.account_number);
       if (user && req.user.balance >= req.body.balance) {
+        req.flash("Success", "Amount transferred successfully.");
         User.findOne({ account_number: req.body.account_number }, function (
           err,
           user
@@ -120,11 +122,16 @@ module.exports.moneytransfer = function (req, res) {
             user.balance = balance;
             user.save(function (err) {
               req.flash("Success", "Amount transferred successfully.");
-              console.log("transfered");
-              res.redirect("back");
+              //console.log("transfered");
+              //return res.redirect("back");
             });
           }
         });
+        req.flash("Success", "Amount transferred successfully.");
+        console.log("transfered");
+        //console.log(req);
+
+        return res.redirect("/users/dashboard");
       } else {
         req.flash("error", "Not enough amount in your account.");
         return res.redirect("back");
@@ -181,7 +188,7 @@ module.exports.addPayee = function (req, res) {
               }
             );
           } else {
-            req.flash("error", "Payee alreay added to your list.");
+            req.flash("error", "Payee already added to your list.");
             return res.redirect("back");
           }
         }
