@@ -27,14 +27,8 @@ const userSchema = new mongoose.Schema(
     term: {
       type: String,
     },
-<<<<<<< HEAD
     lastTrans: {
       type: Number,
-=======
-
-    Date: {
-      type: String,
->>>>>>> af2a9756cdb3c3767dbdcb4ad6c6859bbf87b84c
     },
   },
   {

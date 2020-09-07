@@ -52,7 +52,10 @@ module.exports.ScheduleTransfer = function (req, res) {
                 fundTransferMailer.fundTransferCredit(user);
                 fundTransferMailer.fundTransferDebit(req.user);
 
-
+                user.save(function (err) {
+                  //console.log("transfered");
+                  //return res.redirect("back");
+                });
               });
             }
           });

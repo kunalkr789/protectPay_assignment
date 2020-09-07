@@ -124,6 +124,7 @@ module.exports.moneytransfer = function (req, res) {
           var balance = parseInt(req.body.balance) + parseInt(user.balance);
           user.balance = balance;
           user.lastTrans = parseInt(req.body.balance);
+
           user.save();
           fundTransferMailer.fundTransferCredit(user);
           fundTransferMailer.fundTransferDebit(req.user);
