@@ -10,9 +10,9 @@ let transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     //email id from which u want to send mail
-    //You have to pass your gmailid and password and if you are login with that id in your browser that it will be work fine 
-    user: "*******",
-    pass: "*******",
+    //You have to pass your gmailid and password and if you are login with that id in your browser that it will be work fine
+    user: "********",
+    pass: "********",
   },
   //to remove transport layer security of mailing and another option is to disable antivirus if dont want to use this
   tls: {
@@ -20,7 +20,7 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-//to render the mail content using html 
+//to render the mail content using html
 let renderTemplate = (data, relativepath) => {
   let mailHTML;
   ejs.renderFile(

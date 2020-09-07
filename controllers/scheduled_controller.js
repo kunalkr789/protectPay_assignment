@@ -3,8 +3,7 @@ const Payee = require("../models/payee");
 
 //importing cron to do schedule payment
 const cron = require("node-cron");
-const fundTransferMailer = require('../mailer/fund_transfer');
-
+const fundTransferMailer = require("../mailer/fund_transfer");
 
 //to do transfer the payment according to the schedule
 module.exports.ScheduleTransfer = function (req, res) {
@@ -29,7 +28,7 @@ module.exports.ScheduleTransfer = function (req, res) {
             } else {
               var date = "";
               if (req.body.term == "Daily") {
-                date = "19 22 * * *";
+                date = "30 10 * * *";
               } else if (req.body.term == "Monthly") {
                 date = "* 10 01 * *";
               } else if (req.body.term == "Quarterly") {

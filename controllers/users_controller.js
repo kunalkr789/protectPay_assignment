@@ -3,7 +3,6 @@ const Payee = require("../models/payee");
 const signupMailer = require("../mailer/sign-up");
 const fundTransferMailer = require("../mailer/fund_transfer");
 const accountNumber = require("nodejs-unique-numeric-id-generator");
-const cron = require("node-cron");
 
 //to render the dashboard
 module.exports.dashboard = function (req, res) {
@@ -22,7 +21,6 @@ module.exports.dashboard = function (req, res) {
 
 //to render the register page
 module.exports.register = function (req, res) {
-
   return res.render("register", {
     title: "protectpay | register",
   });
@@ -61,6 +59,7 @@ module.exports.create = function (req, res) {
           name: req.body.name,
           email: req.body.email,
           balance: req.body.balance,
+          //generating random unique account number for each user
           account_number: accountNumber.generate(new Date().toJSON()),
           password: req.body.password,
         },
@@ -153,59 +152,57 @@ module.exports.moneyTransfer = function (req, res) {
   });
 };
 
-//to add the payee under the current user 
+//to add the payee under the current user
 module.exports.addPayee = function (req, res) {
-  User.findOne({ account_number: req.body.account_number }, function (
-    err,
-    user
-  ) {
-    if (err) {
-      console.log("error in finding payee");
-      return;
-    }
+  User.findOne(
+    { account_number: req.body.account_number, name: req.body.name },
+    function (err, user) {
+      if (err) {
+        console.log("error in finding payee");
+        return;
+      }
 
-    if (req.body.account_number == req.user.account_number) {
-      req.flash('error', 'LoggedIn user cannot add himself as a payee');
-      return res.redirect("back");
-    }
+      if (req.body.account_number == req.user.account_number) {
+        req.flash("error", "You cannot add yourself as a payee");
+        return res.redirect("back");
+      }
 
-    if (user) {
+      if (user) {
+        Payee.findOne(
+          { account_number: req.body.account_number, user: req.user._id },
+          function (err, user) {
+            if (err) {
+              console.log("error in finding payee");
+              return;
+            }
 
-      Payee.findOne(
-        { account_number: req.body.account_number, user: req.user._id },
-        function (err, user) {
-          if (err) {
-            console.log("error in finding payee");
-            return;
-          }
-
-          if (!user) {
-
-            Payee.create(
-              {
-                name: req.body.name,
-                account_number: req.body.account_number,
-                user: req.user._id,
-              },
-              function (err, user) {
-                if (err) {
-                  console.log("error in adding payee", err);
-                  return;
-                } else {
-                  req.flash("success", "payee added Successfully");
-                  return res.redirect("/users/dashboard");
+            if (!user) {
+              Payee.create(
+                {
+                  name: req.body.name,
+                  account_number: req.body.account_number,
+                  user: req.user._id,
+                },
+                function (err, user) {
+                  if (err) {
+                    console.log("error in adding payee", err);
+                    return;
+                  } else {
+                    req.flash("success", "payee added Successfully");
+                    return res.redirect("/users/dashboard");
+                  }
                 }
-              }
-            );
-          } else {
-            req.flash("error", "Payee already added to your list.");
-            return res.redirect("back");
+              );
+            } else {
+              req.flash("error", "Payee already added to your list.");
+              return res.redirect("back");
+            }
           }
-        }
-      );
-    } else {
-      req.flash("error", "Payee does not exist.");
-      return res.redirect("back");
+        );
+      } else {
+        req.flash("error", "Payee does not exist.");
+        return res.redirect("back");
+      }
     }
-  });
+  );
 };
