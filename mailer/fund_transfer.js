@@ -1,11 +1,11 @@
 const nodeMailer = require('../config/nodemailer');
 
-//another way to exporting a method
+//to send the mail to payee once the money transfer have done
 exports.fundTransferCredit = (user) => {
     
     let htmlString = nodeMailer.renderTemplate({user:user} , '/signup/fund-transfer-credit.ejs');
     nodeMailer.transporter.sendMail({
-        from: 'anshugargg09@gmail.com',
+        from: '********',//you have to enter the mail id from which u want to send mail
         to: user.email,
         subject: 'Amount Credited',
         html: htmlString
@@ -16,6 +16,7 @@ exports.fundTransferCredit = (user) => {
     });
 }
 
+//to send the mail to payer
 exports.fundTransferDebit = (user) => {
     
     let htmlString = nodeMailer.renderTemplate({user:user} , '/signup/fund-transfer-debit.ejs');

@@ -1,6 +1,6 @@
 const nodeMailer = require('../config/nodemailer');
 
-//another way to exporting a method
+// to send the mail to the registered user once he/she register or sign up on your website
 exports.signup = (user) => {
     
     let htmlString = nodeMailer.renderTemplate({user:user} , '/signup/sign-up-mail.ejs');

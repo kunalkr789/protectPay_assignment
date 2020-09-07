@@ -1,7 +1,12 @@
 const User = require("../models/user");
 const Payee = require("../models/payee");
-const cron = require("node-cron");
 
+//importing cron to do schedule payment
+const cron = require("node-cron");
+const fundTransferMailer = require('../mailer/fund_transfer');
+
+
+//to do transfer the payment according to the schedule
 module.exports.ScheduleTransfer = function (req, res) {
   if (req.user.balance >= req.body.balance) {
     Payee.findOne(
@@ -24,7 +29,7 @@ module.exports.ScheduleTransfer = function (req, res) {
             } else {
               var date = "";
               if (req.body.term == "Daily") {
-                date = "30 10 * * *";
+                date = "19 22 * * *";
               } else if (req.body.term == "Monthly") {
                 date = "* 10 01 * *";
               } else if (req.body.term == "Quarterly") {
@@ -41,6 +46,12 @@ module.exports.ScheduleTransfer = function (req, res) {
                   parseInt(req.body.balance) + parseInt(user.balance);
                 user.balance = balance;
                 user.lastTrans = parseInt(req.body.balance);
+                user.save();
+
+                //to send the mail to both users(payee and payer)
+                fundTransferMailer.fundTransferCredit(user);
+                fundTransferMailer.fundTransferDebit(req.user);
+
                 user.save(function (err) {
                   //console.log("transfered");
                   //return res.redirect("back");
@@ -48,9 +59,10 @@ module.exports.ScheduleTransfer = function (req, res) {
               });
             }
           });
-          req.flash("Success", "Amount will be transferred at specified time.");
-          console.log("Amount will be transferred at specified time.");
-          res.redirect("back");
+          //to show the noty notification
+          req.flash("success", "Amount will be transferred at specified time.");
+          // console.log("Amount will be transferred at specified time.");
+          return res.redirect("back");
         } else {
           req.flash("error", "Not enough amount in your account.");
           return res.redirect("back");
